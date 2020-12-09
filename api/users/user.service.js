@@ -16,6 +16,8 @@ module.exports = {
                 data.phone
             ],
             (error, results, fields) => {
+                console.log(results);
+
                 if (error) {
                     callBack(error);
                 }
@@ -23,6 +25,7 @@ module.exports = {
             }
         );
     },
+
     getUsers: callBack => {
         pool.query(
             `select id,first_name, email, password, phone from users`,
@@ -36,6 +39,7 @@ module.exports = {
         );
 
     },
+    
     getUsersByUserId: (id, callBack) => {
         pool.query(
             `select id,first_name, email, password, phone from users where id = ?`,
@@ -48,6 +52,7 @@ module.exports = {
             }
         );
     },
+
     updateUser: (data, callBack) => {
         pool.query(
             `update users set first_name=?, email=?, password=?, phone=? where id =?`,
@@ -67,6 +72,7 @@ module.exports = {
             }
         );
     },
+
     deleteUser: (data, callBack) => {
         pool.query(
             `delete from users where id = ?`,
@@ -79,6 +85,7 @@ module.exports = {
             }
         );
     },
+
     getUsersByUserEmail: (email, callBack) => {
         pool.query(
           `select * from users where email = ?`,
@@ -91,16 +98,33 @@ module.exports = {
             }
         )
     },
-    // Register: (email, callBack) => {
-    //     pool.query(
-    //         `SELECT email FROM users WHERE email = ?`,
-    //         [email],
-    //         (error, results, fields) => {
-    //             if (error) {
-    //               callBack(error);
-    //             }
-    //             return callBack(null, results);
-    //             }
-    //     )
-    // }
+
+    checkEmail: (email, callBack) => {
+        pool.query(
+            `select email from users where email = ?`,
+            [email],
+
+            (error, results, fields) => {
+
+              if (error) {
+                callBack(error);
+              }
+
+              return callBack(null, results[0]);
+              }
+          )
+    },
+
+    getUsersdata: (email, callBack) => {
+        pool.query(
+          `select first_name,email,phone from users where email = ?`,
+          [email],
+          (error, results, fields) => {
+            if (error) {
+              callBack(error);
+            }
+            return callBack(null, results[0]);
+            }
+        )
+    }
 };
