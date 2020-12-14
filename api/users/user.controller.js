@@ -41,7 +41,7 @@ module.exports = {
                 if (err) {
                     return res.status(500).json({
                         success: 0,
-                        message: "Database connection error"
+                        message: "การเชื่อมต่อกับฐานข้อมูลเกินข้อผิดพลาด"
                     });
                 }
                 getUsersdata(body.email,(err, results) => {
@@ -50,7 +50,7 @@ module.exports = {
                         console.log(err);
                         return res.status(500).json({
                             success: 0,
-                            message: "Database connection error"
+                            message: "การเชื่อมต่อกับฐานข้อมูลเกินข้อผิดพลาด"
                         });
                     }
                     return res.status(200).json({
@@ -75,7 +75,7 @@ module.exports = {
             if (!results) {
                 return res.json({
                     success: 0,
-                    message: "Record not Found"
+                    message: "ไม่พบบัญชีผู้ใช้"
                 });
             }
             return res.json({
@@ -112,13 +112,13 @@ module.exports = {
             if (!results) {
                 return res.json({
                     success: 0,
-                    message: "Failed to update user"
+                    message: "อัพเตข้อมูลไม่สำเร็จ"
                 });
             }
 
             return res.json({
                 success: 1,
-                message: "updated successfully"
+                message: "อัพเดตข้อมูลสำเร็จ"
             });
         });
     },//updateUsers
@@ -132,13 +132,13 @@ module.exports = {
             }
             if (!results) {
                 return res.json({
-                    success: 0,
-                    message: "Record not Found"
+                    success: 1,
+                    message: "ลบผู้ใช้เรียบร้อยแล้ว"
                 });
             }
             return res.json({
-                success: 1,
-                data: "user deleted successfully"
+                success: 0,
+                data: "ไม่พบบัญชีผู้ใช้"
             });
         });
     },//deleteUser
@@ -154,7 +154,7 @@ module.exports = {
             if (!results) {
                 return res.json({
                     success: 0,
-                    data: "Invalid email or password"
+                    data: "อีเมล หรือ รหัสผ่าน ไม่ถูกต้อง"
                 });
             }
             //compereSync เช็ครหัสผ่าน หากใส่รหัสผ่านถูกต้องก็จะล็อคอินได้
@@ -169,26 +169,27 @@ module.exports = {
                 });
                 return res.json({
                     success: 1,
-                    message: "login successfully",
+                    message: "เข้าสู่ระบบสำเร็จ",
                     token: jsontoken
                 });
             } else {
                 return res.json({
                     success: 0,
-                    data: "Invalid email or password"
+                    data: "อีเมล หรือ รหัสผ่าน ไม่ถูกต้อง"
                 });
             }
         })
 
     },//login
 
-
-    // register: (req, res) => {
-    //     const email = req.body;
-
-    //     console.log(email);
-
-        // getEmail(email)
-    // }
-
+    logout:  (req, res) => {
+        req.logout();
+        req.session.save((err) => {
+        if (err) {
+        return next(err);
+        }
+        res.redirect('/');
+        });
+        console.log(result);
+    }
 };
