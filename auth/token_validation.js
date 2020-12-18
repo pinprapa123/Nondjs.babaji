@@ -1,4 +1,7 @@
 const { verify } = require("jsonwebtoken");
+const jwt = require("jsontokens");
+const { user } = require("../validation/users/user.schema");
+
 
 module.exports = {
     checkToken: (req, res, next) => {

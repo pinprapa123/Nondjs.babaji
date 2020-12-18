@@ -1,5 +1,6 @@
 const pool = require("../../confug/database");
 const { get } = require("./user.router");
+
 module.exports = {
 
     create: (data, callBack) => {
@@ -126,5 +127,21 @@ module.exports = {
             return callBack(null, results[0]);
             }
         )
-    }
+    } ,
+
+    getData: (email, callBack) => {
+        pool.query(
+            `select first_name,email,phone from users where email = ?`,
+            [email],
+
+            (error, results, fields) => {
+
+              if (error) {
+                callBack(error);
+              }
+
+              return callBack(null, results[0]);
+              }
+          )
+    },
 };

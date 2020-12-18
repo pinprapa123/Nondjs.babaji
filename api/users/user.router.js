@@ -19,7 +19,7 @@ router.get("/:id",checkToken,getUsersByUserId);
 router.patch("/",checkToken,updateUsers);
 router.delete("/",checkToken,deleteUser);
 router.post("/login", login);
-router.get("/logout", logout);
+// router.get('/logout', logout);
 
 
 module.exports = router;

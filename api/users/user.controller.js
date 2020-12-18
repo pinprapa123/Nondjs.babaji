@@ -6,13 +6,17 @@ const {
     deleteUser,
     getUsersByUserEmail,
     checkEmail,
-    getUsersdata
+    getUsersdata,
+    getData
 } = require("./user.service");
 
 const { genSaltSync, hashSync, compareSync } = require("bcrypt");
 const { sign } = require("jsonwebtoken");
+const createError = require('http-errors')
+// const cookieParser = require('cookie-parser');
 
 
+// Register
 module.exports = {
     createUser: (req, res) => {
         const body = req.body;
@@ -44,8 +48,8 @@ module.exports = {
                         message: "การเชื่อมต่อกับฐานข้อมูลเกินข้อผิดพลาด"
                     });
                 }
-                getUsersdata(body.email,(err, results) => {
-                    console.log("pin",results);
+                getUsersdata(body.email,  (err, results) => {
+                    console.log("mmmmm",results);
                     if (err) {
                         console.log(err);
                         return res.status(500).json({
@@ -115,7 +119,6 @@ module.exports = {
                     message: "อัพเตข้อมูลไม่สำเร็จ"
                 });
             }
-
             return res.json({
                 success: 1,
                 message: "อัพเดตข้อมูลสำเร็จ"
@@ -148,6 +151,7 @@ module.exports = {
         console.log('req => ', req.body)
 
         getUsersByUserEmail(body.email, (err, results) => {
+            console.log(results.first_name);
             if (err) {
                 console.log(err);
             }
@@ -161,16 +165,21 @@ module.exports = {
             //body ข้อมูลทั้งหมดที่เราใช้ sign token
             const result = compareSync(body.password, results.password);
             console.log(result);
+
+
             if (result) {
                 results.password = undefined;
                 //1234 คือ secret key
                 const jsontoken = sign({ result: results }, "1234", {
                     // expiresIn: "1h"
                 });
+
+                res.cookie('id', 123);
                 return res.json({
                     success: 1,
                     message: "เข้าสู่ระบบสำเร็จ",
-                    token: jsontoken
+                    token: jsontoken,
+                    phone : results
                 });
             } else {
                 return res.json({
@@ -178,18 +187,10 @@ module.exports = {
                     data: "อีเมล หรือ รหัสผ่าน ไม่ถูกต้อง"
                 });
             }
-        })
+        });
 
+        
     },//login
 
-    logout:  (req, res) => {
-        req.logout();
-        req.session.save((err) => {
-        if (err) {
-        return next(err);
-        }
-        res.redirect('/');
-        });
-        console.log(result);
-    }
+   
 };
