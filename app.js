@@ -25,10 +25,7 @@ const token_validation = require("./auth/token_validation");
 //api (เริ่มเข้าจากตรงนี้,ไปยังตรงนี้) อันนี้เบส
 app.use("/api/users", userRouter);
 
-
 app.listen(process.env.APP_PORT, () => {
     console.log("Server up and running on PORT : " ,process.env.APP_PORT);
-
-
 });         
 

@@ -1,4 +1,4 @@
-const pool = require("../../confug/database");
+const pool = require("../../config/database");
 const { get } = require("./user.router");
 
 module.exports = {
@@ -29,7 +29,7 @@ module.exports = {
 
     getUsers: callBack => {
         pool.query(
-            `select id,first_name, email, password, phone from users`,
+            `select id,first_name, email, phone from users`,
             [],
             (error, results, fields) => {
                 if (error) {

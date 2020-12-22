@@ -13,6 +13,10 @@ const {
 const { genSaltSync, hashSync, compareSync } = require("bcrypt");
 const { sign } = require("jsonwebtoken");
 const createError = require('http-errors')
+var token;
+ console.log(token);
+
+
 // const cookieParser = require('cookie-parser');
 
 
@@ -96,7 +100,7 @@ module.exports = {
                 console.log(err);
                 return;
             }
-            return res.json({
+            return res.jons({
                 success: 1,
                 data: results
             });
@@ -179,7 +183,7 @@ module.exports = {
                     success: 1,
                     message: "เข้าสู่ระบบสำเร็จ",
                     token: jsontoken,
-                    phone : results
+                    Data : results
                 });
             } else {
                 return res.json({
@@ -192,5 +196,6 @@ module.exports = {
         
     },//login
 
-   
+
+     
 };
